@@ -16,6 +16,11 @@ include github.com/tj/foo
 #    :)
 #
 
+VAR_INSTANT    := set now
+VAR_IF_NOT_SET ?= only if it's not already set
+VAR_LAZY        = evaluate when used
+VAR_APPEND     += append value
+
 # Start the dev server.
 start:
 	@gopherjs -m -v serve --http :3000 github.com/tj/docs/client
@@ -65,6 +70,10 @@ dummy:
 	// Output:
 	// parser.Include{Value:"github.com/tj/foo"}
 	// parser.Comment{Target:"", Value:"Stuff here:\n\n   :)", Default:false}
+	// parser.Variable{Name:"", Value:"set now"}
+	// parser.Variable{Name:"", Value:"only if it's not already set"}
+	// parser.Variable{Name:"", Value:"evaluate when used"}
+	// parser.Variable{Name:"", Value:"append value"}
 	// parser.Comment{Target:"start", Value:"Start the dev server.", Default:false}
 	// parser.Comment{Target:"api", Value:"Start the API server.", Default:false}
 	// parser.Comment{Target:"deps", Value:"Display dependency graph.", Default:false}

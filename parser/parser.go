@@ -94,6 +94,16 @@ func (p *Parser) pushInclude() {
 	})
 }
 
+func (p *Parser) pushVariable() {
+	s := assignmentRe.Split(p.advance(), 2)
+
+	p.nodes = append(p.nodes, Variable{
+		Name:  strings.TrimSpace(s[0]),
+		Value: strings.TrimSpace(s[1]),
+	})
+	// TODO: Should split and buffer any comment
+}
+
 // Parse the input.
 func (p *Parser) parse() error {
 	for {
@@ -109,6 +119,9 @@ func (p *Parser) parse() error {
 			p.bufferComment()
 		case strings.HasPrefix(p.peek(), "include "):
 			p.pushInclude()
+		case assignmentRe.MatchString(p.peek()):
+			p.pushVariable()
+			p.pushComment()
 		case strings.ContainsRune(p.peek(), ':'):
 			p.target = strings.Split(p.advance(), ":")[0]
 			p.pushComment()
